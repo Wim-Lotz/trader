@@ -12,9 +12,14 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "win2016-eval"
-  config.vm.synced_folder "/home/wim/Public", "/public"
+  config.vm.box = "box_name"
+  config.vm.guest = :windows
+  config.vm.communicator = "winrm"
+  config.vm.boot_timeout = 300
+  config.vm.network :forwarded_port, guest: 3389, host: 3389, id: 'rdp', auto_correct: true
+  config.vm.synced_folder "D:/vagrant/data_share", "/data_share"
   config.vm.provision "shell", path: "bootstrap.ps1"
+  config.vm.provider 'hyperv'
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
